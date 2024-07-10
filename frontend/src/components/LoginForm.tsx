@@ -1,4 +1,4 @@
-function SigninForm() {
+function LoginForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -30,4 +30,4 @@ function SigninForm() {
   );
 }
 
-export default SigninForm;
+export default LoginForm;

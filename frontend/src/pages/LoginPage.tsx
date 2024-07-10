@@ -1,4 +1,4 @@
-import SigninForm from "../components/SigninForm";
+import LoginForm from "../components/LoginForm";
 
 function LoginPage() {
   return (
@@ -6,7 +6,7 @@ function LoginPage() {
       <section className="sign-in-content">
         <i className="fa fa-user-circle sign-in-icon"></i>
         <h1>Sign In</h1>
-        <SigninForm />
+        <LoginForm />
       </section>
     </main>
   );
