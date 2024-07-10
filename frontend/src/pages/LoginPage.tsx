@@ -1,6 +1,6 @@
 import SigninForm from "../components/SigninForm";
 
-function SigninPage() {
+function LoginPage() {
   return (
     <main className="main bg-dark">
       <section className="sign-in-content">
@@ -12,4 +12,4 @@ function SigninPage() {
   );
 }
 
-export default SigninPage;
+export default LoginPage;

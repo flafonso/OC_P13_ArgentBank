@@ -1,6 +1,6 @@
 import AccountSection from "../components/AccountSection";
 
-function UserPage() {
+function ProfilePage() {
   return (
     <main className="main bg-dark">
       <div className="header">
@@ -31,4 +31,4 @@ function UserPage() {
   );
 }
 
-export default UserPage;
+export default ProfilePage;
