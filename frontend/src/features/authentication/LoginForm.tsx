@@ -25,7 +25,7 @@ function LoginForm() {
         <input type="checkbox" id="remember-me" name="remember-me" />
         <label htmlFor="remember-me">Remember me</label>
       </div>
-      <button className="sign-in-button">Sign In</button>
+      <button type="submit" className="sign-in-button">Sign In</button>
     </form>
   );
 }
