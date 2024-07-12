@@ -1,14 +1,33 @@
+import { useDispatch } from "react-redux";
+import { login, getProfile } from "./authenticationSlice";
+import { AppDispatch } from "../../app/store";
+import { useNavigate } from "react-router-dom";
+
 function LoginForm() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    const username = data.get("username");
-    const password = data.get("password");
+    const email = data.get("username") as string;
+    const password = data.get("password") as string;
     const rememberMe = data.get("remember-me");
 
-    console.log(`username : ${username}`);
+    console.log(`username : ${email}`);
     console.log(`password : ${password}`);
     console.log(`remember-me : ${rememberMe}`);
+    try {
+      const resultLogin = await dispatch(login({ email, password }));
+      if (login.fulfilled.match(resultLogin)) {
+        const resultProfile = await dispatch(getProfile());
+        if (getProfile.fulfilled.match(resultProfile)) {
+          navigate("/profile");
+        }
+      }
+    } catch (error) {
+      console.error("Failed to login:", error);
+    }
   };
 
   return (
@@ -25,7 +44,9 @@ function LoginForm() {
         <input type="checkbox" id="remember-me" name="remember-me" />
         <label htmlFor="remember-me">Remember me</label>
       </div>
-      <button type="submit" className="sign-in-button">Sign In</button>
+      <button type="submit" className="sign-in-button">
+        Sign In
+      </button>
     </form>
   );
 }
