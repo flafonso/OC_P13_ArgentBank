@@ -1,13 +1,19 @@
 import AccountSection from "../components/AccountSection";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
 
 function ProfilePage() {
+  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
+  console.log("profile page");
+  console.log(userProfile);
+
   return (
     <main className="main bg-dark">
       <div className="header">
         <h1>
           Welcome back
           <br />
-          Tony Jarvis!
+          {userProfile?.firstName} {userProfile?.lastName}
         </h1>
         <button className="edit-button">Edit Name</button>
       </div>
@@ -24,7 +30,7 @@ function ProfilePage() {
       />
       <AccountSection
         title="Argent Bank Credit Card (x8349)"
-        amount={184.30}
+        amount={184.3}
         description="Current Balance"
       />
     </main>
