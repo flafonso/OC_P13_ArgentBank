@@ -6,6 +6,7 @@ import "./index.css";
 import HomePage from "./pages/HomePage.tsx";
 import LoginPage from "./pages/LoginPage.tsx";
 import ProfilePage from "./pages/ProfilePage.tsx";
+import ProtectedRoute from "./features/protectedRoute/ProtectedRoute.tsx";
 
 import { Provider } from "react-redux";
 import { store } from "./app/store";
@@ -25,7 +26,11 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <ProfilePage />,
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

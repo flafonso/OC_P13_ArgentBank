@@ -3,6 +3,7 @@ import authenticationSlice from "../features/authentication/authenticationSlice"
 
 const state = {};
 
+
 export const store = configureStore(
   {
     preloadedState: state,

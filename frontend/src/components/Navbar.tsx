@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { RootState } from "../app/store";
 
 function Navbar() {
+  const auth = useSelector((state: RootState) => state.auth);
+  console.log(auth);
+
   return (
     <nav className="main-nav">
       <Link to="/">
@@ -12,9 +17,20 @@ function Navbar() {
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
       <div>
-        <Link to="/login" className="main-nav-item">
-          <i className="fa fa-user-circle"></i> Sign In
-        </Link>
+        {auth.userProfile ? (
+          <>
+            <Link to="/profile" className="main-nav-item">
+              <i className="fa fa-user-circle"></i> {auth.userProfile.firstName}
+            </Link>
+            <Link to="/login" className="main-nav-item">
+              <i className="fa fa-sign-out"></i> Sign Out
+            </Link>
+          </>
+        ) : (
+          <Link to="/login" className="main-nav-item">
+            <i className="fa fa-user-circle"></i> Sign In
+          </Link>
+        )}
       </div>
     </nav>
   );

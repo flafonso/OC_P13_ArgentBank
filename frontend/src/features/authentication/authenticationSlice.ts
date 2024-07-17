@@ -18,23 +18,23 @@ interface LoginResult {
 }
 
 interface UserProfile {
-  status: number,
-  message: string,
-  body: {
-    id: string,
-    email: string
-  }
+  email: string;
+  firstName: string;
+  lastName: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
 }
 
 export interface AuthenticationState {
-  currentUser: string | undefined;
+  userToken: string | null;
   userProfile: UserProfile | null;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: AuthenticationState = {
-  currentUser: undefined,
+  userToken: null,
   userProfile: null,
   isLoading: false,
   error: null,
@@ -71,11 +71,9 @@ export const getProfile: AsyncThunk<UserProfile, void, any> = createAsyncThunk( 
   "authentication/fetchUserProfile",
   async (_, { rejectWithValue }) => {
     const token = localStorage.getItem("accessToken");
-
     if (!token) {
       return rejectWithValue("No token found");
     }
-
     try {
       const response = await fetch("http://localhost:3001/api/v1/user/profile", {
         method: "POST",
@@ -87,7 +85,7 @@ export const getProfile: AsyncThunk<UserProfile, void, any> = createAsyncThunk( 
         throw new Error("Failed to fetch user profile");
       }
       const data = await response.json();
-      return data;
+      return data.body;
     } catch (error: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       return rejectWithValue(error.message);
     }
@@ -99,7 +97,8 @@ const authenticationSlice = createSlice({
   initialState,
   reducers: {
     logout(state) {
-      state.currentUser = undefined;
+      state.userToken = null;
+      state.userProfile = null;
       localStorage.removeItem("accessToken");
     },
   },
@@ -111,11 +110,12 @@ const authenticationSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action: PayloadAction<LoginResult>) => {
         state.isLoading = false;
-        state.currentUser = action.payload.body.token;
-        localStorage.setItem("accessToken", action.payload.body.token);
+        state.userToken = action.payload.body.token;
+        localStorage.setItem("accessToken", state.userToken);
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
+        state.userToken = null;
         state.error = action.payload as string;
       })
       .addCase(getProfile.pending, (state) => {
@@ -128,6 +128,7 @@ const authenticationSlice = createSlice({
       })
       .addCase(getProfile.rejected, (state, action) => {
         state.isLoading = false;
+        state.userProfile = null;
         state.error = action.payload as string;
       });
   },
