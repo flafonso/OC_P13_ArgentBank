@@ -1,10 +1,16 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { RootState } from "../app/store";
+import { RootState } from "../../app/store";
+import { logout } from "../authentication/authenticationSlice";
 
 function Navbar() {
   const auth = useSelector((state: RootState) => state.auth);
-  console.log(auth);
+  // console.log(auth);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  }
 
   return (
     <nav className="main-nav">
@@ -22,7 +28,7 @@ function Navbar() {
             <Link to="/profile" className="main-nav-item">
               <i className="fa fa-user-circle"></i> {auth.userProfile.firstName}
             </Link>
-            <Link to="/login" className="main-nav-item">
+            <Link onClick={handleLogout} to="/" className="main-nav-item">
               <i className="fa fa-sign-out"></i> Sign Out
             </Link>
           </>
