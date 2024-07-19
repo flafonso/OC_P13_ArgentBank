@@ -310,3 +310,13 @@ body, #root {
     width: 200px;
   }
 }
+
+.error {
+  border: 2px solid red;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.8em;
+  margin-top: 0.5em;
+}
