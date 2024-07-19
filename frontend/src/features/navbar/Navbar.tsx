@@ -10,7 +10,7 @@ function Navbar() {
 
   const handleLogout = () => {
     dispatch(logout());
-  }
+  };
 
   return (
     <nav className="main-nav">

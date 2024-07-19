@@ -1,22 +1,12 @@
 import AccountSection from "../components/AccountSection";
-import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import ProfileHeader from "../features/profileHeader/ProfileHeader.tsx";
 
 function ProfilePage() {
-  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
-  console.log("profile page");
-  console.log(userProfile);
+
 
   return (
     <main className="main bg-dark">
-      <div className="header">
-        <h1>
-          Welcome back
-          <br />
-          {userProfile?.firstName} {userProfile?.lastName}
-        </h1>
-        <button className="edit-button">Edit Name</button>
-      </div>
+      <ProfileHeader />
       <h2 className="sr-only">Accounts</h2>
       <AccountSection
         title="Argent Bank Checking (x8349)"
