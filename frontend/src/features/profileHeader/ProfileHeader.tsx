@@ -1,51 +1,51 @@
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../app/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { updateProfile } from "../authentication/authenticationSlice";
-import { editFormFieldCheck, FormFieldCheck } from "../../utils/fieldCheck";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  firstName: z.string().trim().min(2, "First name is required"),
+  lastName: z.string().trim().min(2, "Last name is required"),
+});
+type FormFields = z.infer<typeof schema>;
 
 function ProfileHeader() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<FormFields>({ resolver: zodResolver(schema) });
+
   const userProfile = useSelector((state: RootState) => state.auth.userProfile);
-  // console.log(userProfile);
   const [showEdit, setshowEdit] = useState(false);
-  const [fieldCheck, setFieldCheck] = useState<FormFieldCheck>({
-    valid: false,
-    error: {},
-  });
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleEdit = () => {
-    setshowEdit(true);
-  };
-  const handleCancel = () => {
-    setshowEdit(false);
-  };
-  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
-    const firstName = (data.get("firstName") as string | null)?.trim() ?? "";
-    const lastName = (data.get("lastName") as string | null)?.trim() ?? "";
-    // console.log("check dans le composant retour direct =>");
-    // console.log(editFormFieldCheck(firstName, lastName));
-
-    const validation = editFormFieldCheck(firstName, lastName);
-    setFieldCheck(validation);
-    console.log("check dans le composant =>");
-    console.log(fieldCheck);
-
-    if (!validation.valid) {
-      return;
-    }
+  const onSave: SubmitHandler<FormFields> = async (data) => {
+    console.log(data);
     try {
-      const resultUpdate = await dispatch(
-        updateProfile({ firstName, lastName })
-      );
+      const resultUpdate = await dispatch(updateProfile(data));
       if (updateProfile.fulfilled.match(resultUpdate)) {
         setshowEdit(false);
       }
     } catch (error) {
       console.error("Failed to login:", error);
     }
+  };
+
+  useEffect(() => {
+    reset();
+  }, [isSubmitSuccessful, reset]);
+
+  const handleEdit = () => {
+    setshowEdit(true);
+  };
+  const handleCancel = () => {
+    setshowEdit(false);
+    reset();
   };
 
   return (
@@ -57,32 +57,30 @@ function ProfileHeader() {
         {!showEdit && userProfile?.lastName}
       </h1>
       {showEdit ? (
-        <form className="edit-form" onSubmit={handleSave}>
+        <form className="edit-form" onSubmit={handleSubmit(onSave)}>
           <div className="edit-inputs">
             <div>
               <input
+                {...register("firstName")}
                 type="text"
                 name="firstName"
                 placeholder={userProfile?.firstName}
-                className={fieldCheck.error.firstName ? "error" : ""}
+                className={errors.firstName ? "error" : ""}
               />
-              {fieldCheck.error.firstName && (
-                <div className="error-message">
-                  {fieldCheck.error.firstName}
-                </div>
+              {errors.firstName && (
+                <div className="error-message">{errors.firstName.message}</div>
               )}
             </div>
             <div>
               <input
+                {...register("lastName")}
                 type="text"
                 name="lastName"
                 placeholder={userProfile?.lastName}
-                className={fieldCheck.error.lastName ? "error" : ""}
+                className={errors.lastName ? "error" : ""}
               />
-              {fieldCheck.error.lastName && (
-                <div className="error-message">
-                  {fieldCheck.error.lastName}
-                </div>
+              {errors.lastName && (
+                <div className="error-message">{errors.lastName.message}</div>
               )}
             </div>
           </div>
