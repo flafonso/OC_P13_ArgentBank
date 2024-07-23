@@ -13,16 +13,15 @@ const schema = z.object({
 type FormFields = z.infer<typeof schema>;
 
 function ProfileHeader() {
+  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
+  const [showEdit, setshowEdit] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors, isSubmitSuccessful },
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
-
-  const userProfile = useSelector((state: RootState) => state.auth.userProfile);
-  const [showEdit, setshowEdit] = useState(false);
-  const dispatch = useDispatch<AppDispatch>();
 
   const onSave: SubmitHandler<FormFields> = async (data) => {
     console.log(data);
