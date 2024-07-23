@@ -6,14 +6,16 @@ import { useNavigate } from "react-router-dom";
 function ProtectedRoute({ children }: PropsWithChildren) {
   const auth = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
+  console.log(token);
 
   useEffect(() => {
-    if (auth.userProfile === null) {
+    if (token === null && auth.userProfile === null) {
       navigate("/login", { replace: true });
     }
-  }, [auth, navigate]);
+  }, [auth, token, navigate]);
 
-  if (auth.userProfile === null) {
+  if (token === null && auth.userProfile === null) {
     return null;
   }
 
