@@ -74,3 +74,4 @@ Two users will be created:
 cd frontend
 npm run dev
 ```
+The application will be available at `http://localhost:5173/`.
