@@ -24,7 +24,6 @@ function ProfileHeader() {
   } = useForm<FormFields>({ resolver: zodResolver(schema) });
 
   const onSave: SubmitHandler<FormFields> = async (data) => {
-    console.log(data);
     try {
       const resultUpdate = await dispatch(updateProfile(data));
       if (updateProfile.fulfilled.match(resultUpdate)) {

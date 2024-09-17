@@ -5,7 +5,6 @@ import { logout } from "../authentication/authenticationSlice";
 
 function Navbar() {
   const auth = useSelector((state: RootState) => state.auth);
-  // console.log(auth);
   const dispatch = useDispatch();
 
   const handleLogout = () => {

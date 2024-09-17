@@ -7,7 +7,6 @@ function ProtectedRoute({ children }: PropsWithChildren) {
   const auth = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
-  console.log(token);
 
   useEffect(() => {
     if (token === null && auth.userProfile === null) {

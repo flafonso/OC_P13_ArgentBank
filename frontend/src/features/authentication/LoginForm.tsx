@@ -26,10 +26,6 @@ function LoginForm() {
     const email = data.email;
     const password = data.password;
     // const rememberMe = data.get("remember-me");
-
-    console.log(data);
-    console.log(`email : ${email}`);
-    console.log(`password : ${password}`);
     try {
       const resultLogin = await dispatch(login({ email, password }));
       if (login.fulfilled.match(resultLogin)) {

@@ -1,7 +1,12 @@
-function AccountSection({ title, amount, description }: { title: string, amount: number, description: string}) {
-  // console.log(title);
-  // console.log(amount);
-  // console.log(description);
+function AccountSection({
+  title,
+  amount,
+  description,
+}: {
+  title: string;
+  amount: number;
+  description: string;
+}) {
   return (
     <section className="account">
       <div className="account-content-wrapper">
